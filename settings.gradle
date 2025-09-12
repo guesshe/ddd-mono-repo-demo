@@ -1,0 +1,40 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal() // Default Gradle Plugin Portal
+        mavenCentral() // Maven Central repository
+    }
+}
+
+rootProject.name = 'ddd-demo'
+
+FileTree buildFiles = fileTree(rootDir) {
+    List excludes = gradle.startParameter.projectProperties.get('excludeProjects')?.split(',')
+    include '**/*.gradle'
+    exclude 'build', '**/gradle', 'settings.gradle', 'buildSrc', '/build.gradle', '.*', 'out'
+    exclude '**/grails3'
+    if (excludes) {
+        exclude excludes
+    }
+}
+
+buildFiles.each { File buildFile ->
+
+    boolean isDefaultName = 'build.gradle' == buildFile.name
+    if (isDefaultName) {
+        String buildFilePath = buildFile.parentFile.absolutePath
+        String projectName = buildFilePath.tokenize(File.separator)[-1]
+        configureProject(':' + projectName, projectName, buildFile)
+    } else {
+        String projectName = buildFile.name.replace('.gradle', '')
+        configureProject(':' + projectName, projectName, buildFile)
+    }
+}
+
+def configureProject(String projectPath, String projectName, File buildFile) {
+    include(projectPath)
+
+    def project = findProject(projectPath)
+    project.name = projectName
+    project.projectDir = buildFile.parentFile
+    project.buildFileName = buildFile.name
+}
