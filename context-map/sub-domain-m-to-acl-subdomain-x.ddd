@@ -1,0 +1,3 @@
+This document outlines the technical relationship between sub-domain-m and sub-domain-x.
+
+Any commands/messages sent from sub-domain-m will have to go through sub-domain-x's ACL layer to perform validation to prevent contaminating sub-domain-x's internal processing model.
