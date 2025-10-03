@@ -1,0 +1,1 @@
+subdomain y processes AI/NLP related business logic and also provide Threshold Configuration and Monitoring
