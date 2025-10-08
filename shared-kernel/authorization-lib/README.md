@@ -1,0 +1,1 @@
+This module in shared-kernel is responsible for handling authorization requests.
